@@ -727,7 +727,7 @@ function closePhotoUploadModal() {
     document.getElementById('modalUploadProgress').style.display = 'none';
 }
 
-async function handlePhotoUpload(files) {
+function handlePhotoUpload(files) {
     if (!currentPhotoUploadProjectId) return;
     
     const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
@@ -748,37 +748,60 @@ async function handlePhotoUpload(files) {
     
     progressDiv.style.display = 'block';
     progressFill.style.width = '0%';
-    progressText.textContent = 'Φόρτωση...';
+    progressFill.style.transition = 'width 0.3s ease';
+    progressText.textContent = 'Προετοιμασία... 0%';
     
-    try {
-        const response = await fetch(`${window.location.origin}/api/projects/${currentPhotoUploadProjectId}/photos`, {
-            method: 'POST',
-            credentials: 'include',
-            body: formData
-        });
-        
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Failed to upload photos');
+    // Use XMLHttpRequest for progress tracking
+    const xhr = new XMLHttpRequest();
+    
+    // Track upload progress
+    xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+            const percentComplete = Math.round((e.loaded / e.total) * 100);
+            progressFill.style.width = `${percentComplete}%`;
+            progressText.textContent = `Φόρτωση... ${percentComplete}%`;
         }
-        
-        const result = await response.json();
-        progressFill.style.width = '100%';
-        progressText.textContent = `Ολοκληρώθηκε!`;
-        
-        // Reset file input
-        const fileInput = document.getElementById('modalFileInput');
-        if (fileInput) {
-            fileInput.value = '';
+    });
+    
+    // Handle completion
+    xhr.addEventListener('load', () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+                const result = JSON.parse(xhr.responseText);
+                progressFill.style.width = '100%';
+                progressText.textContent = `Ολοκληρώθηκε! 100%`;
+                
+                // Reset file input
+                const fileInput = document.getElementById('modalFileInput');
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+                
+                setTimeout(async () => {
+                    await loadProjects();
+                    closePhotoUploadModal();
+                    showToast(`Προστέθηκαν ${result.photos.length} φωτογραφίες!`, 'success');
+                }, 500);
+            } catch (error) {
+                console.error('Error parsing response:', error);
+                showToast('Σφάλμα κατά την επεξεργασία της απάντησης.', 'error');
+                progressDiv.style.display = 'none';
+            }
+        } else {
+            // Error response
+            try {
+                const error = JSON.parse(xhr.responseText);
+                throw new Error(error.error || 'Failed to upload photos');
+            } catch (error) {
+                showToast('Σφάλμα κατά τη φόρτωση των φωτογραφιών.', 'error');
+                progressDiv.style.display = 'none';
+            }
         }
-        
-        setTimeout(async () => {
-            await loadProjects();
-            closePhotoUploadModal();
-            showToast(`Προστέθηκαν ${result.photos.length} φωτογραφίες!`, 'success');
-        }, 500);
-    } catch (error) {
-        console.error('Error uploading photos:', error);
+    });
+    
+    // Handle errors
+    xhr.addEventListener('error', () => {
+        console.error('Upload error');
         showToast('Σφάλμα κατά τη φόρτωση των φωτογραφιών.', 'error');
         progressDiv.style.display = 'none';
         
@@ -787,7 +810,17 @@ async function handlePhotoUpload(files) {
         if (fileInput) {
             fileInput.value = '';
         }
-    }
+    });
+    
+    // Handle abort
+    xhr.addEventListener('abort', () => {
+        progressDiv.style.display = 'none';
+    });
+    
+    // Open and send request
+    xhr.open('POST', `${window.location.origin}/api/projects/${currentPhotoUploadProjectId}/photos`);
+    xhr.withCredentials = true; // Include credentials (cookies)
+    xhr.send(formData);
 }
 
 // Update Project Order
