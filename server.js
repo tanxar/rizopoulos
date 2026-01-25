@@ -103,7 +103,7 @@ const upload = multer({
 
 // Initialize database
 // Use persistent disk path if available (Render), otherwise use project directory
-const dbPath = process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
+// dbPath is already declared above for session store
 const dbDir = path.dirname(dbPath);
 
 // Ensure database directory exists
