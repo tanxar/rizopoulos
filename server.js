@@ -16,10 +16,19 @@ const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
 // Session configuration with SQLite store
-const sessionDbPath = process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
+// SQLiteStore needs directory path, not file path
+const dbPath = process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
+const sessionDbDir = path.dirname(dbPath);
+
+// Ensure session directory exists
+if (!fs.existsSync(sessionDbDir)) {
+    fs.mkdirSync(sessionDbDir, { recursive: true });
+}
+
 app.use(session({
     store: new SQLiteStore({
-        db: sessionDbPath,
+        dir: sessionDbDir,
+        db: path.basename(dbPath),
         table: 'sessions'
     }),
     secret: process.env.SESSION_SECRET || 'rizopoulos-secret-key-change-in-production',
@@ -95,11 +104,20 @@ const upload = multer({
 // Initialize database
 // Use persistent disk path if available (Render), otherwise use project directory
 const dbPath = process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
+const dbDir = path.dirname(dbPath);
+
+// Ensure database directory exists
+if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
+    console.log('Created database directory:', dbDir);
+}
+
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error opening database:', err);
+        console.error('Database path:', dbPath);
     } else {
-        console.log('Connected to SQLite database');
+        console.log('Connected to SQLite database at:', dbPath);
         initDatabase();
     }
 });
