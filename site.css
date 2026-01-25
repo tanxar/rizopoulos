@@ -2427,8 +2427,9 @@ html {
   aspect-ratio: 16 / 10;
   min-height: 360px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  padding: 0;
+  margin: 0;
 }
 
 .project-item::after{
@@ -2489,7 +2490,11 @@ html {
   object-fit: cover;
   transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: block;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 0;
 }
 
