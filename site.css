@@ -2266,13 +2266,20 @@ html {
   }
   
   .project-caption {
-    font-size: 1rem;
-    padding: 1.25rem 1rem 1rem;
+    font-size: 0.9375rem;
+    padding: 1rem 0.875rem 0.875rem;
+    font-weight: 600;
+    background: linear-gradient(to top, 
+      rgba(0, 0, 0, 0.7) 0%, 
+      rgba(0, 0, 0, 0.55) 50%,
+      rgba(0, 0, 0, 0.25) 80%,
+      transparent 100%);
   }
   
-  .project-item:hover .project-caption {
-    font-size: 1.15rem;
-    padding: 1.5rem 1rem 1.25rem;
+  .project-item:hover .project-caption,
+  .project-item:active .project-caption {
+    font-size: 1rem;
+    padding: 1.125rem 0.875rem 1rem;
   }
   
   .bg-vector-1,
@@ -2354,13 +2361,20 @@ html {
   }
   
   .project-caption {
-    font-size: 0.95rem;
-    padding: 1.15rem 0.875rem 0.875rem;
+    font-size: 0.875rem;
+    padding: 0.875rem 0.75rem 0.75rem;
+    font-weight: 600;
+    background: linear-gradient(to top, 
+      rgba(0, 0, 0, 0.65) 0%, 
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.2) 80%,
+      transparent 100%);
   }
   
-  .project-item:hover .project-caption {
-    font-size: 1.1rem;
-    padding: 1.35rem 0.875rem 1.15rem;
+  .project-item:hover .project-caption,
+  .project-item:active .project-caption {
+    font-size: 0.9375rem;
+    padding: 1rem 0.75rem 0.875rem;
   }
   
   .projects .container {
@@ -2494,15 +2508,14 @@ html {
   right: 0;
   z-index: 3;
   color: white;
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 1rem;
   letter-spacing: -0.01em;
-  padding: 1.5rem 1.5rem 1.25rem;
+  padding: 1.25rem 1.25rem 1rem;
   background: linear-gradient(to top, 
-    rgba(0, 0, 0, 0.92) 0%, 
-    rgba(0, 0, 0, 0.82) 40%,
-    rgba(0, 0, 0, 0.65) 70%,
-    rgba(0, 0, 0, 0.4) 90%,
+    rgba(0, 0, 0, 0.75) 0%, 
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.3) 80%,
     transparent 100%);
   text-align: center;
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -2512,9 +2525,8 @@ html {
   text-overflow: ellipsis;
   white-space: nowrap;
   text-shadow: 
-    0 2px 16px rgba(0,0,0,0.9),
-    0 1px 6px rgba(0,0,0,0.7),
-    0 0 20px rgba(37, 99, 235, 0.3);
+    0 2px 8px rgba(0,0,0,0.8),
+    0 1px 4px rgba(0,0,0,0.6);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
