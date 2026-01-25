@@ -905,21 +905,31 @@ function animateCounter(element) {
     const rawTarget = (element.getAttribute('data-target') || '0').trim();
     const target = parseInt(rawTarget.replace(/[^\d]/g, ''), 10) || 0;
     const suffix = element.getAttribute('data-suffix') || '';
-    const duration = 2000;
-    const increment = target / (duration / 16);
-    let current = 0;
-
-    const updateCounter = () => {
-        current += increment;
-        if (current < target) {
-            element.textContent = Math.floor(current);
+    
+    // Faster animation on mobile devices
+    const isMobile = window.innerWidth <= 768;
+    const duration = isMobile ? 1000 : 2000;
+    
+    const startTime = performance.now();
+    
+    const updateCounter = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function (ease-out cubic) for smoother animation
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(target * easeOut);
+        
+        element.textContent = `${current}${suffix}`;
+        
+        if (progress < 1) {
             requestAnimationFrame(updateCounter);
         } else {
             element.textContent = `${target}${suffix}`;
         }
     };
 
-    updateCounter();
+    requestAnimationFrame(updateCounter);
 }
 
 // Scroll Animations
