@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const session = require('express-session');
+const SQLiteStore = require('connect-sqlite3')(session);
 const sharp = require('sharp');
 
 const app = express();
@@ -14,8 +15,13 @@ const PORT = process.env.PORT || 3000;
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
-// Session configuration
+// Session configuration with SQLite store
+const sessionDbPath = process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
 app.use(session({
+    store: new SQLiteStore({
+        db: sessionDbPath,
+        table: 'sessions'
+    }),
     secret: process.env.SESSION_SECRET || 'rizopoulos-secret-key-change-in-production',
     resave: false,
     saveUninitialized: false,
