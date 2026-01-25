@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Διαχείριση Έργων - ΡΙΖΟΠΟΥΛΟΣ</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <div class="container">
+                <h1>Διαχείριση Έργων</h1>
+                <div class="admin-header-actions">
+                    <a href="/" class="btn btn-secondary">Επιστροφή στην Αρχική</a>
+                    <button id="logoutBtn" class="btn btn-danger">Αποσύνδεση</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="admin-main">
+            <!-- Statistics Dashboard -->
+            <section class="admin-stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-icon stat-card-icon--projects">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </div>
+                        <div class="stat-card-content">
+                            <div class="stat-card-value" id="totalProjects">0</div>
+                            <div class="stat-card-label">Σύνολο Έργων</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon stat-card-icon--photos">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-card-content">
+                            <div class="stat-card-value" id="totalPhotos">0</div>
+                            <div class="stat-card-label">Σύνολο Φωτογραφιών</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon stat-card-icon--public">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5"></path>
+                                <path d="M2 12l10 5 10-5"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-card-content">
+                            <div class="stat-card-value" id="publicProjects">0</div>
+                            <div class="stat-card-label">Δημόσια Έργα</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon stat-card-icon--private">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-card-content">
+                            <div class="stat-card-value" id="privateProjects">0</div>
+                            <div class="stat-card-label">Ιδιωτικά Έργα</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section class="admin-section">
+                <div class="admin-section-header">
+                    <div>
+                        <h2>Έργα</h2>
+                        <p class="section-hint">Σύρετε τα έργα για να αλλάξετε τη σειρά τους</p>
+                    </div>
+                    <button class="btn btn-primary" id="addProjectBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Προσθήκη Νέου Έργου
+                    </button>
+                </div>
+                <div class="projects-list" id="projectsList">
+                    <!-- Projects will be loaded here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Project Modal (Add/Edit) -->
+    <div id="projectModal" class="edit-modal">
+        <div class="edit-modal-content">
+            <h3 id="projectModalTitle">Προσθήκη Νέου Έργου</h3>
+            <div>
+                <label for="projectTitleInput">Τίτλος Έργου (προαιρετικό):</label>
+                <input type="text" id="projectTitleInput" placeholder="Π.χ. Κατοικία Κοζάνης (προαιρετικό)">
+            </div>
+            <div>
+                <label for="projectCategoryInput">Κατηγορία:</label>
+                <select id="projectCategoryInput">
+                    <option value="public">Δημόσιο</option>
+                    <option value="private">Ιδιωτικό</option>
+                </select>
+            </div>
+            <div>
+                <label for="projectDescriptionInput">Περιγραφή (προαιρετικό):</label>
+                <textarea id="projectDescriptionInput" rows="3" placeholder="Σύντομη περιγραφή του έργου..."></textarea>
+            </div>
+            <div class="edit-modal-actions">
+                <button class="btn btn-secondary" id="cancelProjectBtn">Ακύρωση</button>
+                <button class="btn btn-primary" id="saveProjectBtn">Αποθήκευση</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Upload Modal -->
+    <div id="photoUploadModal" class="edit-modal">
+        <div class="edit-modal-content photo-upload-modal">
+            <h3 id="photoUploadTitle">Προσθήκη Φωτογραφιών</h3>
+            <div class="upload-area" id="modalUploadArea">
+                <div class="upload-content">
+                    <div class="upload-icon">📷</div>
+                    <p>Σύρετε φωτογραφίες εδώ ή</p>
+                    <label for="modalFileInput" class="btn btn-primary">Επιλέξτε Αρχεία</label>
+                    <input type="file" id="modalFileInput" multiple accept="image/*" style="display: none;">
+                    <p class="upload-hint">Μπορείτε να επιλέξετε πολλαπλές φωτογραφίες</p>
+                </div>
+            </div>
+            <div id="modalUploadProgress" class="upload-progress" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="modalProgressFill"></div>
+                </div>
+                <p id="modalProgressText">Φόρτωση...</p>
+            </div>
+            <div class="edit-modal-actions">
+                <button class="btn btn-secondary" id="closePhotoUploadBtn">Κλείσιμο</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Έργα - ΡΙΖΟΠΟΥΛΟΣ, ΓΕΩΡΓΙΟΣ, & ΣΙΑ Ο.Ε.</title>
+    <meta name="description" content="Ενδεικτικές φωτογραφίες από έργα που έχουμε ολοκληρώσει. ΡΙΖΟΠΟΥΛΟΣ, ΓΕΩΡΓΙΟΣ, & ΣΙΑ Ο.Ε. — Πολιτικός Μηχανικός.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="site.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="projects-page">
+    <a class="skip-link" href="#main">Μετάβαση στο περιεχόμενο</a>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <!-- Navigation -->
+    <nav class="navbar is-scrolled">
+        <div class="container">
+            <div class="nav-brand">
+                <h1><a href="index.html" style="text-decoration: none; color: inherit;">ΡΙΖΟΠΟΥΛΟΣ, ΓΕΩΡΓΙΟΣ, & ΣΙΑ Ο.Ε.</a></h1>
+                <span class="subtitle">Πολιτικός Μηχανικός</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home">Αρχική</a></li>
+                <li><a href="index.html#about">Σχετικά</a></li>
+                <li><a href="index.html#services">Υπηρεσίες</a></li>
+                <li><a href="index.html#contact">Επικοινωνία</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main id="main">
+        <!-- Projects Section -->
+        <section id="projects" class="projects">
+            <!-- Decorative Background Elements -->
+            <div class="projects-bg-decoration">
+                <svg class="bg-vector bg-vector-1" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgba(37, 99, 235, 0.08);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgba(37, 99, 235, 0.02);stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M200,50 Q250,100 300,150 T400,250 Q350,300 200,350 Q50,300 0,250 T200,150 Q150,100 200,50 Z" fill="url(#grad1)" opacity="0.6"/>
+                </svg>
+                <svg class="bg-vector bg-vector-2" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgba(34, 197, 94, 0.06);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgba(34, 197, 94, 0.02);stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="150,20 280,120 250,280 50,280 20,120" fill="url(#grad2)" opacity="0.5"/>
+                </svg>
+                <div class="bg-circle bg-circle-1"></div>
+                <div class="bg-circle bg-circle-2"></div>
+                <div class="bg-circle bg-circle-3"></div>
+                <div class="bg-grid-pattern"></div>
+            </div>
+            <div class="container">
+                <div class="section-header section-header--left">
+                    <h2>Έργα</h2>
+                    <p class="section-description">Ενδεικτικές φωτογραφίες από έργα που έχουμε ολοκληρώσει. Πατήστε σε μια φωτογραφία για προβολή.</p>
+                </div>
+
+                <div class="projects-filters-wrapper">
+                    <div class="projects-filters" aria-label="Φίλτρα κατηγοριών">
+                        <button class="filter-btn active" data-filter="all"><span>Όλα</span></button>
+                        <button class="filter-btn" data-filter="public"><span>Δημόσια</span></button>
+                        <button class="filter-btn" data-filter="private"><span>Ιδιωτικά</span></button>
+                    </div>
+                </div>
+
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Photos will be loaded dynamically -->
+                    <div class="project-placeholder loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Φορτώνουν έργα...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-mark" aria-hidden="true">RG</div>
+                    <h3>ΡΙΖΟΠΟΥΛΟΣ, ΓΕΩΡΓΙΟΣ, & ΣΙΑ Ο.Ε.</h3>
+                    <p class="footer-tagline">Πολιτικός Μηχανικός — μελέτες, άδειες, κατασκευές και επίβλεψη έργων στην Κοζάνη και γύρω περιοχές.</p>
+                    <div class="footer-badges" aria-label="Εξειδίκευση">
+                        <span class="footer-pill">Κοζάνη</span>
+                        <span class="footer-pill">Μελέτες</span>
+                        <span class="footer-pill">Άδειες</span>
+                        <span class="footer-pill">Κατασκευές</span>
+                    </div>
+                    <div class="footer-actions" aria-label="Γρήγορες ενέργειες">
+                        <a class="btn btn-primary footer-btn" href="index.html#contact">Ζητήστε εκτίμηση</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 ΡΙΖΟΠΟΥΛΟΣ, ΓΕΩΡΓΙΟΣ, & ΣΙΑ Ο.Ε. Όλα τα δικαιώματα κατοχυρωμένα.</p>
+                <a class="footer-toplink" href="#main">
+                    <span aria-hidden="true">↑</span>
+                    <span class="sr-only">Πάνω</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Photo Modal -->
+    <div id="photoModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <button class="modal-nav modal-prev" id="modalPrev">‹</button>
+        <button class="modal-nav modal-next" id="modalNext">›</button>
+        <img class="modal-content" id="modalImage">
+        <div class="modal-caption" id="modalCaption"></div>
+        <div class="modal-counter" id="modalCounter">
+            <span class="counter-current">1</span>/<span class="counter-total">1</span>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
