@@ -768,21 +768,21 @@ function handlePhotoUpload(files) {
         if (xhr.status >= 200 && xhr.status < 300) {
             try {
                 const result = JSON.parse(xhr.responseText);
-                progressFill.style.width = '100%';
+        progressFill.style.width = '100%';
                 progressText.textContent = `Ολοκληρώθηκε! 100%`;
-                
-                // Reset file input
-                const fileInput = document.getElementById('modalFileInput');
-                if (fileInput) {
-                    fileInput.value = '';
-                }
-                
-                setTimeout(async () => {
-                    await loadProjects();
-                    closePhotoUploadModal();
-                    showToast(`Προστέθηκαν ${result.photos.length} φωτογραφίες!`, 'success');
-                }, 500);
-            } catch (error) {
+        
+        // Reset file input
+        const fileInput = document.getElementById('modalFileInput');
+        if (fileInput) {
+            fileInput.value = '';
+        }
+        
+        setTimeout(async () => {
+            await loadProjects();
+            closePhotoUploadModal();
+            showToast(`Προστέθηκαν ${result.photos.length} φωτογραφίες!`, 'success');
+        }, 500);
+    } catch (error) {
                 console.error('Error parsing response:', error);
                 showToast('Σφάλμα κατά την επεξεργασία της απάντησης.', 'error');
                 progressDiv.style.display = 'none';

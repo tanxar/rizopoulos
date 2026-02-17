@@ -244,16 +244,16 @@ function initActiveSectionObserver() {
                     // 1. At or past the offset point (preferred)
                     // 2. Or approaching the offset point (within 200px above)
                     // This ensures we always have an active section when scrolling
-                    if (rect.top <= offset + 100) {
-                        // Section is at or past the offset - this is what we want
-                        dist = Math.abs(rect.top - offset);
+                if (rect.top <= offset + 100) {
+                    // Section is at or past the offset - this is what we want
+                    dist = Math.abs(rect.top - offset);
                     } else if (rect.top > offset + 100 && rect.top < offset + 200 && isScrolledPastTop) {
                         // Section is approaching the offset - use it if we've scrolled past top
                         // This prevents gaps between sections
                         dist = Math.abs(rect.top - offset) + 50; // Add penalty for being above offset
-                    } else {
-                        // Section is way above the offset - skip it
-                        return;
+                } else {
+                    // Section is way above the offset - skip it
+                    return;
                     }
                 }
                 
@@ -911,7 +911,7 @@ function animateCounter(element) {
     const duration = isMobile ? 1000 : 2000;
     
     const startTime = performance.now();
-    
+
     const updateCounter = (currentTime) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);

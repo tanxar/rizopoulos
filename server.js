@@ -546,37 +546,37 @@ app.post('/api/projects/:id/photos', requireAuth, upload.array('photos', 20), as
                     const tempPath = file.path + '.optimized';
                     await optimizeImage(file.path, tempPath);
                     
-                    const filename = file.filename;
-                    const url = `/uploads/${filename}`;
-                    
+                const filename = file.filename;
+                const url = `/uploads/${filename}`;
+                
                     // Insert into database
-                    db.run(
-                        'INSERT INTO photos (project_id, filename, url, display_order) VALUES (?, ?, ?, ?)',
-                        [id, filename, url, displayOrder],
-                        function(err) {
-                            if (err) {
-                                console.error('Error inserting photo:', err);
-                                // Delete uploaded file on error
+                db.run(
+                    'INSERT INTO photos (project_id, filename, url, display_order) VALUES (?, ?, ?, ?)',
+                    [id, filename, url, displayOrder],
+                    function(err) {
+                        if (err) {
+                            console.error('Error inserting photo:', err);
+                            // Delete uploaded file on error
                                 if (fs.existsSync(file.path)) {
-                                    fs.unlinkSync(file.path);
+                            fs.unlinkSync(file.path);
                                 }
-                            } else {
-                                photos.push({
-                                    id: this.lastID,
-                                    url: url,
-                                    display_order: displayOrder,
-                                    date: new Date().toISOString()
-                                });
-                            }
-                            
-                            displayOrder++;
-                            completed++;
-                            
-                            if (completed === total) {
-                                res.json({ photos, message: `Προστέθηκαν ${photos.length} φωτογραφίες` });
-                            }
+                        } else {
+                            photos.push({
+                                id: this.lastID,
+                                url: url,
+                                display_order: displayOrder,
+                                date: new Date().toISOString()
+                            });
                         }
-                    );
+                        
+                        displayOrder++;
+                        completed++;
+                        
+                        if (completed === total) {
+                            res.json({ photos, message: `Προστέθηκαν ${photos.length} φωτογραφίες` });
+                        }
+                    }
+                );
                 } catch (error) {
                     console.error('Error processing file:', error);
                     // Delete file on error
@@ -715,47 +715,47 @@ app.post('/api/photos', requireAuth, upload.single('photo'), async (req, res) =>
         // Optimize image before saving to database
         const tempPath = req.file.path + '.optimized';
         await optimizeImage(req.file.path, tempPath);
-        
-        const { title, category } = req.body;
-        const filename = req.file.filename;
-        const url = `/uploads/${filename}`;
-        
-        // Get max display_order for the category and add 1
-        db.get(
-            'SELECT MAX(display_order) as max_order FROM photos WHERE category = ?',
-            [category || 'public'],
-            (err, row) => {
-                if (err) {
-                    console.error('Error getting max order:', err);
-                }
-                
-                const displayOrder = (row && row.max_order !== null) ? row.max_order + 1 : 0;
-                
-                db.run(
-                    'INSERT INTO photos (title, category, filename, url, display_order) VALUES (?, ?, ?, ?, ?)',
-                    [title || '', category || 'public', filename, url, displayOrder],
-                    function(err) {
-                        if (err) {
-                            console.error('Error inserting photo:', err);
-                            // Delete uploaded file on error
-                            if (fs.existsSync(req.file.path)) {
-                                fs.unlinkSync(req.file.path);
-                            }
-                            return res.status(500).json({ error: 'Σφάλμα κατά την αποθήκευση φωτογραφίας' });
-                        }
-                        
-                        res.json({
-                            id: this.lastID,
-                            title: title || '',
-                            category: category || 'public',
-                            url: url,
-                            display_order: displayOrder,
-                            date: new Date().toISOString()
-                        });
-                    }
-                );
+    
+    const { title, category } = req.body;
+    const filename = req.file.filename;
+    const url = `/uploads/${filename}`;
+    
+    // Get max display_order for the category and add 1
+    db.get(
+        'SELECT MAX(display_order) as max_order FROM photos WHERE category = ?',
+        [category || 'public'],
+        (err, row) => {
+            if (err) {
+                console.error('Error getting max order:', err);
             }
-        );
+            
+            const displayOrder = (row && row.max_order !== null) ? row.max_order + 1 : 0;
+            
+            db.run(
+                'INSERT INTO photos (title, category, filename, url, display_order) VALUES (?, ?, ?, ?, ?)',
+                [title || '', category || 'public', filename, url, displayOrder],
+                function(err) {
+                    if (err) {
+                        console.error('Error inserting photo:', err);
+                        // Delete uploaded file on error
+                            if (fs.existsSync(req.file.path)) {
+                        fs.unlinkSync(req.file.path);
+                            }
+                        return res.status(500).json({ error: 'Σφάλμα κατά την αποθήκευση φωτογραφίας' });
+                    }
+                    
+                    res.json({
+                        id: this.lastID,
+                        title: title || '',
+                        category: category || 'public',
+                        url: url,
+                        display_order: displayOrder,
+                        date: new Date().toISOString()
+                    });
+                }
+            );
+        }
+    );
     } catch (error) {
         console.error('Error processing photo:', error);
         // Delete file on error
